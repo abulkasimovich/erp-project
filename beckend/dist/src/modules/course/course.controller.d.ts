@@ -1,0 +1,25 @@
+import { CourseService } from './course.service';
+import { CreateCourseDto } from './dto/create.course.dto';
+export declare class CourseController {
+    private readonly courseService;
+    constructor(courseService: CourseService);
+    getAllCourse(): Promise<{
+        success: boolean;
+        data: {
+            description: string | null;
+            id: number;
+            status: import("@prisma/client").$Enums.Status;
+            created_at: Date;
+            updated_at: Date;
+            name: string;
+            durationMonth: number;
+            durationLesson: number;
+            level: import("@prisma/client").$Enums.CourseLevel | null;
+            price: import("@prisma/client-runtime-utils").Decimal;
+        }[];
+    }>;
+    createCourse(payload: CreateCourseDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+}

@@ -58,7 +58,7 @@ enum HomeworkStatusStudent {
 model User {
   id              Int              @id @default(autoincrement())
   fullName        String
-  contact         String           @unique
+  email           String           @unique
   photo           String?
   password        String
   position        String
@@ -74,16 +74,17 @@ model User {
   homework        Homework[]
   lessonVideos    LessonVideo[]
   homeworkResults HomeworkResult[]
+  studentGroups   StudentGroup[]
 }
 
 model Teacher {
   id              Int              @id @default(autoincrement())
   fullName        String
-  contact         String           @unique
+  email           String           @unique
   photo           String?
   password        String
   position        String
-  exprience       Int
+  experience       Int
   status          UserStatus       @default(ACTIVE)
   created_at      DateTime         @default(now())
   updated_at      DateTime         @updatedAt
@@ -99,7 +100,7 @@ model Teacher {
 model Student {
   id         Int        @id @default(autoincrement())
   fullName   String
-  contact    String     @unique
+  email      String     @unique
   photo      String?
   password   String
   birth_date DateTime
@@ -117,7 +118,7 @@ model Course {
   id             Int          @id @default(autoincrement())
   name           String       @unique
   description    String?
-  status         Status
+  status         Status       @default(ACTIVE)
   durationMonth  Int
   durationLesson Int
   level          CourseLevel?
@@ -138,35 +139,38 @@ model Room {
 }
 
 model Group {
-  id            Int            @id @default(autoincrement())
-  teacherId     Int?
-  userId        Int?
-  roomId        Int
-  courseId      Int            @unique
-  name          String         @unique
-  capacity      Int
-  startDate     DateTime
-  startTime     String
-  weekDays      WeekDays[]
-  status        UserStatus     @default(ACTIVE)
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @updatedAt
+  id         Int        @id @default(autoincrement())
+  teacherId  Int
+  userId     Int
+  roomId     Int
+  courseId   Int        @unique
+  name       String     @unique
+  capacity   Int        @default(20)
+  startDate  DateTime
+  startTime  String
+  weekDays   WeekDays[]
+  status     UserStatus @default(ACTIVE)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+
   studentGroups StudentGroup[]
-  teacher       Teacher?       @relation(fields: [teacherId], references: [id])
+  teacher       Teacher        @relation(fields: [teacherId], references: [id])
   room          Room           @relation(fields: [roomId], references: [id])
-  user          User?          @relation(fields: [userId], references: [id])
+  user          User           @relation(fields: [userId], references: [id])
   course        Course         @relation(fields: [courseId], references: [id])
   lessons       Lesson[]
 }
 
 model StudentGroup {
   id         Int        @id @default(autoincrement())
+  userId     Int
   groupId    Int
   studentId  Int
   status     UserStatus @default(ACTIVE)
   created_at DateTime   @default(now())
   updated_at DateTime   @updatedAt
 
+  user    User    @relation(fields: [userId], references: [id])
   group   Group   @relation(fields: [groupId], references: [id])
   student Student @relation(fields: [studentId], references: [id])
 
@@ -179,7 +183,6 @@ model Lesson {
   userId      Int?
   teacherId   Int?
   title       String
-  lessonStart DateTime
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 

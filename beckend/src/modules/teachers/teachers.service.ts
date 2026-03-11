@@ -1,26 +1,77 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { hashPassword } from 'src/common/config/bcrypt';
+import { PrismaService } from 'src/database/prisma.service';
+import { CreateTeacherDto } from './dto/create.teacher.dto';
+import { UpdateTeacherDto } from './dto/update.teacher.dto';
+import { MailerService } from 'src/common/email/email.service';
 
 @Injectable()
 export class TeachersService {
-  create(createTeacherDto: CreateTeacherDto) {
-    return 'This action adds a new teacher';
+  constructor(
+    private prisma: PrismaService,
+    private mailerService: MailerService,
+  ) {}
+
+  async createTeacher(payload: CreateTeacherDto, filename: string) {
+    await this.prisma.teacher.create({
+      data: {
+        ...payload,
+        password: await hashPassword(payload.password),
+        photo: filename ?? null,
+      },
+    });
+
+    await this.mailerService.sendEmail(
+      payload.email,
+      payload.email,
+      payload.password,
+    );
+
+    return {
+      success: true,
+      message: 'Teacher successfully created',
+    };
   }
 
-  findAll() {
-    return `This action returns all teachers`;
+  async getAllTeachers() {
+    const Teachers = await this.prisma.teacher.findMany();
+
+    return {
+      success: true,
+      data: Teachers,
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} teacher`;
+  async getOneTeacher(id: number) {
+    const Teacher = await this.prisma.teacher.findUnique({ where: { id } });
+    if (!Teacher) {
+      throw new NotFoundException('Teacher is Not found');
+    }
+
+    return {
+      success: true,
+      data: Teacher,
+    };
   }
 
-  update(id: number, updateTeacherDto: UpdateTeacherDto) {
-    return `This action updates a #${id} teacher`;
+  async updateTeacher(id: number, payload: UpdateTeacherDto) {
+    const Teacher = await this.prisma.teacher.findUnique({ where: { id } });
+    if (!Teacher) {
+      throw new NotFoundException('Teacher is Not found');
+    }
+    await this.prisma.teacher.update({ where: { id }, data: payload });
+
+    return {
+      success: true,
+      message: 'Teacher updated successfully',
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} teacher`;
+  async deleteTeacher(id: number) {
+    const Teacher = await this.prisma.teacher.findUnique({ where: { id } });
+    if (!Teacher) {
+      throw new NotFoundException('Teacher is Not found');
+    }
+    await this.prisma.teacher.delete({ where: { id } });
   }
 }
