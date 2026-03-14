@@ -214,6 +214,7 @@ model Attendance {
 model Homework {
   id           Int      @id @default(autoincrement())
   lessonId     Int
+  groupId      Int
   teacherId    Int?
   userId       Int?
   title        String
@@ -232,6 +233,7 @@ model Homework {
 model LessonVideo {
   id        Int    @id @default(autoincrement())
   lessonId  Int
+  groupId   Int
   teacherId Int?
   userId    Int?
   file      String

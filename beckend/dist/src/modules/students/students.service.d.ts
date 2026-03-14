@@ -16,11 +16,11 @@ export declare class StudentsService {
             fullName: string;
             email: string;
             password: string;
+            id: number;
             photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
-            id: number;
             birth_date: Date;
         }[];
     }>;
@@ -30,11 +30,11 @@ export declare class StudentsService {
             fullName: string;
             email: string;
             password: string;
+            id: number;
             photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
-            id: number;
             birth_date: Date;
         };
     }>;

@@ -11,6 +11,7 @@ async function bootstrap() {
         whitelist: true,
         forbidNonWhitelisted: true
     }));
+    app.enableCors();
     const documentFactory = () => swagger_1.SwaggerModule.createDocument(app, swagger_2.config);
     swagger_1.SwaggerModule.setup('api', app, documentFactory, {
         swaggerOptions: { persistAuthorization: true }

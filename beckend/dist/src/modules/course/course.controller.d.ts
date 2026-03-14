@@ -6,12 +6,12 @@ export declare class CourseController {
     getAllCourse(): Promise<{
         success: boolean;
         data: {
-            description: string | null;
             id: number;
             status: import("@prisma/client").$Enums.Status;
             created_at: Date;
             updated_at: Date;
             name: string;
+            description: string | null;
             durationMonth: number;
             durationLesson: number;
             level: import("@prisma/client").$Enums.CourseLevel | null;

@@ -13,15 +13,15 @@ export declare class UsersService {
     getAllUsers(): Promise<{
         success: boolean;
         data: {
-            id: number;
             fullName: string;
             email: string;
-            photo: string | null;
             password: string;
             position: string;
             hire_date: Date;
             role: import("@prisma/client").$Enums.Role;
             address: string | null;
+            id: number;
+            photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
@@ -30,15 +30,15 @@ export declare class UsersService {
     getOneUser(id: number): Promise<{
         success: boolean;
         data: {
-            id: number;
             fullName: string;
             email: string;
-            photo: string | null;
             password: string;
             position: string;
             hire_date: Date;
             role: import("@prisma/client").$Enums.Role;
             address: string | null;
+            id: number;
+            photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;

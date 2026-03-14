@@ -4,15 +4,24 @@ import { PrismaService } from 'src/database/prisma.service';
 export declare class GroupsService {
     private prisma;
     constructor(prisma: PrismaService);
+    getAllStudentGroupById(groupId: number): Promise<{
+        success: boolean;
+        data: {
+            fullName: string;
+            email: string;
+            id: number;
+            photo: string | null;
+        }[];
+    }>;
     getGroupLessons(groupId: number, currentUser: {
         id: number;
         role: Role;
     }): Promise<{
         success: boolean;
         data: {
+            id: number;
             created_at: Date;
             updated_at: Date;
-            id: number;
             title: string;
             teacherId: number | null;
             userId: number | null;
@@ -22,10 +31,10 @@ export declare class GroupsService {
     getAllGroup(): Promise<{
         success: boolean;
         data: {
+            id: number;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
-            id: number;
             name: string;
             capacity: number;
             teacherId: number;

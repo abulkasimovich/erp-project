@@ -6,10 +6,10 @@ export declare class CourseService {
     getAllCourse(): Promise<{
         success: boolean;
         data: {
+            id: number;
             status: import("@prisma/client").$Enums.Status;
             created_at: Date;
             updated_at: Date;
-            id: number;
             name: string;
             description: string | null;
             durationMonth: number;

@@ -17,11 +17,11 @@ export declare class TeachersService {
             email: string;
             password: string;
             position: string;
+            id: number;
             photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
-            id: number;
             experience: number;
         }[];
     }>;
@@ -32,11 +32,11 @@ export declare class TeachersService {
             email: string;
             password: string;
             position: string;
+            id: number;
             photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
-            id: number;
             experience: number;
         };
     }>;

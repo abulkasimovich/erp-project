@@ -6,10 +6,10 @@ export declare class RoomsService {
     getAllRoom(): Promise<{
         success: boolean;
         data: {
+            id: number;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
-            id: number;
             name: string;
             capacity: number;
         }[];

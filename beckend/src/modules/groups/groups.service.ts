@@ -13,6 +13,33 @@ import { PrismaService } from 'src/database/prisma.service';
 export class GroupsService {
   constructor(private prisma: PrismaService) {}
 
+  async getAllStudentGroupById(groupId: number) {
+        const groups = await this.prisma.studentGroup.findMany({
+            where: { 
+                groupId,
+                status: Status.ACTIVE
+             },
+            select: {
+                id: true,
+                student: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        photo: true,
+                        email: true
+                    }
+                }
+            }
+        })
+
+        const formattedGroups = groups.map(group => group.student)
+
+        return {
+            success: true,
+            data: formattedGroups
+        }
+    }
+
   async getGroupLessons(
     groupId: number,
     currentUser: { id: number; role: Role },

@@ -18,6 +18,30 @@ let GroupsService = class GroupsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
+    async getAllStudentGroupById(groupId) {
+        const groups = await this.prisma.studentGroup.findMany({
+            where: {
+                groupId,
+                status: client_1.Status.ACTIVE
+            },
+            select: {
+                id: true,
+                student: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        photo: true,
+                        email: true
+                    }
+                }
+            }
+        });
+        const formattedGroups = groups.map(group => group.student);
+        return {
+            success: true,
+            data: formattedGroups
+        };
+    }
     async getGroupLessons(groupId, currentUser) {
         const existGroup = await this.prisma.group.findUnique({
             where: {

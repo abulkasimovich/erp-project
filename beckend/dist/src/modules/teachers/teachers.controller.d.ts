@@ -11,12 +11,12 @@ export declare class TeachersController {
     getAllTeacher(): Promise<{
         success: boolean;
         data: {
-            password: string;
-            email: string;
             fullName: string;
+            email: string;
+            password: string;
             position: string;
-            photo: string | null;
             id: number;
+            photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
@@ -26,12 +26,12 @@ export declare class TeachersController {
     getOneTeacher(id: string): Promise<{
         success: boolean;
         data: {
-            password: string;
-            email: string;
             fullName: string;
+            email: string;
+            password: string;
             position: string;
-            photo: string | null;
             id: number;
+            photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;

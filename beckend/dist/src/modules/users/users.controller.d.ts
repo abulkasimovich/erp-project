@@ -11,15 +11,15 @@ export declare class UsersController {
     getAllUser(): Promise<{
         success: boolean;
         data: {
-            id: number;
             fullName: string;
             email: string;
-            photo: string | null;
             password: string;
             position: string;
             hire_date: Date;
             role: import("@prisma/client").$Enums.Role;
             address: string | null;
+            id: number;
+            photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
@@ -28,15 +28,15 @@ export declare class UsersController {
     getOneUser(id: string): Promise<{
         success: boolean;
         data: {
-            id: number;
             fullName: string;
             email: string;
-            photo: string | null;
             password: string;
             position: string;
             hire_date: Date;
             role: import("@prisma/client").$Enums.Role;
             address: string | null;
+            id: number;
+            photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;

@@ -20,6 +20,11 @@ const course_module_1 = require("./modules/course/course.module");
 const rooms_module_1 = require("./modules/rooms/rooms.module");
 const groups_module_1 = require("./modules/groups/groups.module");
 const lessons_module_1 = require("./modules/lessons/lessons.module");
+const attendance_module_1 = require("./modules/attendance/attendance.module");
+const homework_module_1 = require("./modules/homework/homework.module");
+const homework_response_module_1 = require("./modules/homework-response/homework-response.module");
+const lesson_video_module_1 = require("./modules/lesson-video/lesson-video.module");
+const homework_result_module_1 = require("./modules/homework-result/homework-result.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -39,6 +44,11 @@ exports.AppModule = AppModule = __decorate([
             rooms_module_1.RoomsModule,
             groups_module_1.GroupsModule,
             lessons_module_1.LessonsModule,
+            attendance_module_1.AttendanceModule,
+            homework_module_1.HomeworkModule,
+            homework_response_module_1.HomeworkResponseModule,
+            lesson_video_module_1.LessonVideoModule,
+            homework_result_module_1.HomeworkResultModule,
         ],
         providers: [user_seeder_1.UserSeeder],
     })

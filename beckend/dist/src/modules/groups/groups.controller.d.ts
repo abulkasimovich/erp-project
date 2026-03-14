@@ -3,16 +3,25 @@ import { CreateGroupDto } from './dto/create.group.dto';
 export declare class GroupsController {
     private readonly groupService;
     constructor(groupService: GroupsService);
+    getAllStudentGroupById(groupId: number): Promise<{
+        success: boolean;
+        data: {
+            fullName: string;
+            email: string;
+            id: number;
+            photo: string | null;
+        }[];
+    }>;
     getGroupLessons(groupId: number, req: Request): Promise<{
         success: boolean;
         data: {
-            title: string;
             id: number;
             created_at: Date;
             updated_at: Date;
-            groupId: number;
-            userId: number | null;
+            title: string;
             teacherId: number | null;
+            userId: number | null;
+            groupId: number;
         }[];
     }>;
     getAllGroup(): Promise<{
@@ -24,13 +33,13 @@ export declare class GroupsController {
             updated_at: Date;
             name: string;
             capacity: number;
-            userId: number;
             teacherId: number;
             roomId: number;
             courseId: number;
             startDate: Date;
             startTime: string;
             weekDays: import("@prisma/client").$Enums.WeekDays[];
+            userId: number;
         }[];
     }>;
     createGroup(payload: CreateGroupDto, req: Request): Promise<{

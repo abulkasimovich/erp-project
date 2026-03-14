@@ -19,7 +19,18 @@ import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 @Controller('groups')
 @ApiBearerAuth()
 export class GroupsController {
-  constructor(private readonly groupService: GroupsService) {}
+  constructor(private readonly groupService: GroupsService) { }
+
+
+  @ApiOperation({ summary: `${Role.SUPERADMIN}, ${Role.ADMIN}, ${Role.TEACHER}` })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.SUPERADMIN, Role.ADMIN)
+  @Get("students/:groupId")
+  getAllStudentGroupById(
+    @Param("groupId", ParseIntPipe) groupId: number
+  ) {
+    return this.groupService.getAllStudentGroupById(groupId)
+  }
 
   @ApiOperation({
     summary: `${Role.SUPERADMIN}, ${Role.ADMIN}, ${Role.TEACHER}`,

@@ -10,11 +10,11 @@ export declare class StudentsController {
     getAllStudent(): Promise<{
         success: boolean;
         data: {
-            password: string;
-            email: string;
             fullName: string;
-            photo: string | null;
+            email: string;
+            password: string;
             id: number;
+            photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
@@ -24,11 +24,11 @@ export declare class StudentsController {
     getOneStudent(id: string): Promise<{
         success: boolean;
         data: {
-            password: string;
-            email: string;
             fullName: string;
-            photo: string | null;
+            email: string;
+            password: string;
             id: number;
+            photo: string | null;
             status: import("@prisma/client").$Enums.UserStatus;
             created_at: Date;
             updated_at: Date;
