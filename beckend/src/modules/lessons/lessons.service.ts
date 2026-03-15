@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { Role, Status } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
+import { UpdateLessonVideoDto } from '../lesson-video/dto/update-lesson-video.dto';
+import { UpdateLessonDto } from './dto/update-lesson.dto';
 
 
 @Injectable()
@@ -30,8 +32,8 @@ export class LessonsService {
             success: true,
             data: lessons
         }
-    }  
-             
+    }
+
     async createLesson(payload: CreateLessonDto, currentUser: { id: number, role: Role }) {
         const existGroup = await this.prisma.group.findUnique({
             where: { id: payload.groupId, status: Status.ACTIVE }
@@ -52,5 +54,39 @@ export class LessonsService {
             success: true,
             message: "Lesson created successfully"
         }
+    }
+
+    async getOneLesson(id: number) {
+        const lesson = await this.prisma.lesson.findUnique({ where: { id } });
+        if (!lesson) {
+            throw new NotFoundException('lesson is Not found');
+        }
+
+        return {
+            success: true,
+            data: lesson,
+        };
+    }
+
+    async updateLesson(id: number, payload: UpdateLessonDto) {
+        const lesson = await this.prisma.lesson.findUnique({ where: { id } });
+        if (!lesson) {
+            throw new NotFoundException('lesson is Not found');
+        }
+        await this.prisma.lesson.update({ where: { id }, data: payload });
+
+        return {
+            success: true,
+            message: 'lesson updated successfully',
+        };
+    }
+
+    async deleteLesson(id: number) {
+        const lesson = await this.prisma.lesson.findUnique({ where: { id } });
+        if (!lesson) {
+            throw new NotFoundException('lesson is Not found');
+        }
+        await this.prisma.lesson.delete({ where: { id } });
+
     }
 }

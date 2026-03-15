@@ -27,6 +27,7 @@ const role_1 = require("../../common/decorator/role");
 const client_1 = require("@prisma/client");
 const swagger_1 = require("@nestjs/swagger");
 const create_homework_response_dto_1 = require("./dto/create-homework-response.dto");
+const update_homework_response_dto_1 = require("./dto/update-homework-response.dto");
 let HomeworkResponseController = class HomeworkResponseController {
     service;
     constructor(service) {
@@ -37,6 +38,15 @@ let HomeworkResponseController = class HomeworkResponseController {
     }
     getResponses(homeworkId) {
         return this.service.getResponses(homeworkId);
+    }
+    getOneHomeworkResponse(id) {
+        return this.service.getOneHomeworkResponse(+id);
+    }
+    updateHomeworkResponse(id, payload) {
+        return this.service.updateHomeworkResponse(+id, payload);
+    }
+    deleteHomeworkResponse(id) {
+        return this.service.deleteHomeworkResponse(+id);
     }
 };
 exports.HomeworkResponseController = HomeworkResponseController;
@@ -88,9 +98,37 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], HomeworkResponseController.prototype, "getResponses", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], HomeworkResponseController.prototype, "getOneHomeworkResponse", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Put)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_homework_response_dto_1.UpdateHomeworkResponseDto]),
+    __metadata("design:returntype", void 0)
+], HomeworkResponseController.prototype, "updateHomeworkResponse", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], HomeworkResponseController.prototype, "deleteHomeworkResponse", null);
 exports.HomeworkResponseController = HomeworkResponseController = __decorate([
     (0, common_1.Controller)("homework-response"),
     (0, swagger_1.ApiBearerAuth)(),
-    __metadata("design:paramtypes", [homework_response_service_1.HomeworkResponseService])
+    __metadata("design:paramtypes", [homework_response_service_1.homeworkResponseService])
 ], HomeworkResponseController);
 //# sourceMappingURL=homework-response.controller.js.map

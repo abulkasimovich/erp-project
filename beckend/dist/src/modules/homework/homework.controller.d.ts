@@ -1,5 +1,6 @@
 import { CreateHomeworkDto } from './dto/create-homework.dto';
 import { HomeworksService } from './homework.service';
+import { UpdateHomeworkDto } from './dto/updatehomework.dto';
 export declare class HomeworkController {
     private readonly homeworkService;
     constructor(homeworkService: HomeworksService);
@@ -14,4 +15,24 @@ export declare class HomeworkController {
         success: boolean;
         message: string;
     }>;
+    getOneHomework(id: string): Promise<{
+        success: boolean;
+        data: {
+            id: number;
+            created_at: Date;
+            updated_at: Date;
+            title: string;
+            teacherId: number | null;
+            lessonId: number;
+            userId: number | null;
+            groupId: number;
+            file: string | null;
+            durationTime: number;
+        };
+    }>;
+    updateHomework(id: string, payload: UpdateHomeworkDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteHomework(id: string): Promise<void>;
 }

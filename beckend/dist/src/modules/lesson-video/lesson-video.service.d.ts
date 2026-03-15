@@ -1,6 +1,7 @@
 import { CreateLessonVideoDto } from './dto/create-lesson-video.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { Role } from '@prisma/client';
+import { UpdateLessonVideoDto } from './dto/update-lesson-video.dto';
 export declare class LessonVideoService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -24,4 +25,21 @@ export declare class LessonVideoService {
         success: boolean;
         message: string;
     }>;
+    getOneLessonVideo(id: number): Promise<{
+        success: boolean;
+        data: {
+            id: number;
+            created_at: Date;
+            teacherId: number | null;
+            lessonId: number;
+            userId: number | null;
+            groupId: number;
+            file: string;
+        };
+    }>;
+    updateLessonVideo(id: number, payload: UpdateLessonVideoDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteLessonVideo(id: number): Promise<void>;
 }

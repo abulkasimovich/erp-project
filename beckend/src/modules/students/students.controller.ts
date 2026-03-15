@@ -24,6 +24,8 @@ import { RolesGuard } from 'src/common/guards/role-guard';
 import { Roles } from 'src/common/decorator/role';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateUserDto } from '../users/dto/update.user.dto';
+import { UpdateStudentDto } from './dto/update-student.dto';
 
 @Controller('students')
 @ApiBearerAuth()
@@ -73,8 +75,22 @@ export class StudentsController {
     return this.studentsService.getAllStudents();
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
   @Get(':id')
   getOneStudent(@Param('id') id: string) {
     return this.studentsService.getOneStudent(+id);
   }
+
+  @UseGuards(AuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPERADMIN)
+    @Put(":id")
+    updateStudent(@Param('id') id: string, @Body() payload: UpdateStudentDto) {
+      return this.studentsService.updateStudent(+id, payload);
+    }
+  
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPERADMIN)
+    @Delete(":id")
+    deleteStudent(@Param('id') id: string) {}
 }

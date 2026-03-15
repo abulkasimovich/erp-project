@@ -1,6 +1,7 @@
 import { CreateGroupDto } from './dto/create.group.dto';
 import { Role } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
+import { UpdateGroupDto } from './dto/update.group.dto';
 export declare class GroupsService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -52,4 +53,27 @@ export declare class GroupsService {
         success: boolean;
         message: string;
     }>;
+    getOneGroup(id: number): Promise<{
+        success: boolean;
+        data: {
+            id: number;
+            status: import("@prisma/client").$Enums.UserStatus;
+            created_at: Date;
+            updated_at: Date;
+            name: string;
+            capacity: number;
+            teacherId: number;
+            roomId: number;
+            courseId: number;
+            startDate: Date;
+            startTime: string;
+            weekDays: import("@prisma/client").$Enums.WeekDays[];
+            userId: number;
+        };
+    }>;
+    updateGroup(id: number, payload: UpdateGroupDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteGroup(id: number): Promise<void>;
 }

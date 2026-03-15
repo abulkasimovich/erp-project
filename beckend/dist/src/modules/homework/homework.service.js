@@ -84,6 +84,34 @@ let HomeworksService = class HomeworksService {
             message: "Homework created successfully"
         };
     }
+    async getOneHomework(id) {
+        const homework = await this.prisma.homework.findUnique({ where: { id } });
+        if (!homework) {
+            throw new common_1.NotFoundException('homework is Not found');
+        }
+        return {
+            success: true,
+            data: homework,
+        };
+    }
+    async updateHomework(id, payload) {
+        const homework = await this.prisma.homework.findUnique({ where: { id } });
+        if (!homework) {
+            throw new common_1.NotFoundException('homework is Not found');
+        }
+        await this.prisma.homework.update({ where: { id }, data: payload });
+        return {
+            success: true,
+            message: 'homework updated successfully',
+        };
+    }
+    async deleteHomework(id) {
+        const homework = await this.prisma.homework.findUnique({ where: { id } });
+        if (!homework) {
+            throw new common_1.NotFoundException('homework is Not found');
+        }
+        await this.prisma.homework.delete({ where: { id } });
+    }
 };
 exports.HomeworksService = HomeworksService;
 exports.HomeworksService = HomeworksService = __decorate([

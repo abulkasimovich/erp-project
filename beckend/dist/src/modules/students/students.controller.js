@@ -23,6 +23,7 @@ const role_guard_1 = require("../../common/guards/role-guard");
 const role_1 = require("../../common/decorator/role");
 const students_service_1 = require("./students.service");
 const create_student_dto_1 = require("./dto/create-student.dto");
+const update_student_dto_1 = require("./dto/update-student.dto");
 let StudentsController = class StudentsController {
     studentsService;
     constructor(studentsService) {
@@ -37,6 +38,10 @@ let StudentsController = class StudentsController {
     getOneStudent(id) {
         return this.studentsService.getOneStudent(+id);
     }
+    updateStudent(id, payload) {
+        return this.studentsService.updateStudent(+id, payload);
+    }
+    deleteStudent(id) { }
 };
 exports.StudentsController = StudentsController;
 __decorate([
@@ -83,12 +88,33 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], StudentsController.prototype, "getAllStudent", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], StudentsController.prototype, "getOneStudent", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Put)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_student_dto_1.UpdateStudentDto]),
+    __metadata("design:returntype", void 0)
+], StudentsController.prototype, "updateStudent", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], StudentsController.prototype, "deleteStudent", null);
 exports.StudentsController = StudentsController = __decorate([
     (0, common_1.Controller)('students'),
     (0, swagger_1.ApiBearerAuth)(),

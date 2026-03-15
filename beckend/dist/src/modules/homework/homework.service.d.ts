@@ -1,5 +1,6 @@
 import { Role } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
+import { UpdateHomeworkDto } from './dto/updatehomework.dto';
 export declare class HomeworksService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -20,4 +21,24 @@ export declare class HomeworksService {
         success: boolean;
         message: string;
     }>;
+    getOneHomework(id: number): Promise<{
+        success: boolean;
+        data: {
+            id: number;
+            created_at: Date;
+            updated_at: Date;
+            title: string;
+            teacherId: number | null;
+            lessonId: number;
+            userId: number | null;
+            groupId: number;
+            file: string | null;
+            durationTime: number;
+        };
+    }>;
+    updateHomework(id: number, payload: UpdateHomeworkDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteHomework(id: number): Promise<void>;
 }

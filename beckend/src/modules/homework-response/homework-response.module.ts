@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { HomeworkResponseService } from './homework-response.service';
+import { homeworkResponseService } from './homework-response.service';
 import { HomeworkResponseController } from './homework-response.controller';
 
 @Module({
   controllers: [HomeworkResponseController],
-  providers: [HomeworkResponseService],
+  providers: [homeworkResponseService],
 })
 export class HomeworkResponseModule {}

@@ -27,6 +27,7 @@ const platform_express_1 = require("@nestjs/platform-express");
 const multer_1 = require("multer");
 const path_1 = __importDefault(require("path"));
 const client_1 = require("@prisma/client");
+const update_lesson_video_dto_1 = require("./dto/update-lesson-video.dto");
 let LessonVideoController = class LessonVideoController {
     lessonVideoService;
     constructor(lessonVideoService) {
@@ -37,6 +38,15 @@ let LessonVideoController = class LessonVideoController {
     }
     createHomework(payload, req, file) {
         return this.lessonVideoService.createLessonVideos(payload, req["user"], file.filename);
+    }
+    getOneLessonVideo(id) {
+        return this.lessonVideoService.getOneLessonVideo(+id);
+    }
+    updateLessonVideo(id, payload) {
+        return this.lessonVideoService.updateLessonVideo(+id, payload);
+    }
+    deleteHomeworkResponse(id) {
+        return this.lessonVideoService.deleteLessonVideo(+id);
     }
 };
 exports.LessonVideoController = LessonVideoController;
@@ -85,6 +95,34 @@ __decorate([
     __metadata("design:paramtypes", [create_lesson_video_dto_1.CreateLessonVideoDto, Request, Object]),
     __metadata("design:returntype", void 0)
 ], LessonVideoController.prototype, "createHomework", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], LessonVideoController.prototype, "getOneLessonVideo", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Put)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_lesson_video_dto_1.UpdateLessonVideoDto]),
+    __metadata("design:returntype", void 0)
+], LessonVideoController.prototype, "updateLessonVideo", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], LessonVideoController.prototype, "deleteHomeworkResponse", null);
 exports.LessonVideoController = LessonVideoController = __decorate([
     (0, common_1.Controller)('lesson-video'),
     (0, swagger_1.ApiBearerAuth)(),

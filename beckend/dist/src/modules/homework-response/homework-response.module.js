@@ -16,7 +16,7 @@ exports.HomeworkResponseModule = HomeworkResponseModule;
 exports.HomeworkResponseModule = HomeworkResponseModule = __decorate([
     (0, common_1.Module)({
         controllers: [homework_response_controller_1.HomeworkResponseController],
-        providers: [homework_response_service_1.HomeworkResponseService],
+        providers: [homework_response_service_1.homeworkResponseService],
     })
 ], HomeworkResponseModule);
 //# sourceMappingURL=homework-response.module.js.map

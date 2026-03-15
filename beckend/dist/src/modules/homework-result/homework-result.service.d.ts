@@ -1,5 +1,6 @@
 import { PrismaService } from "src/database/prisma.service";
 import { Role } from "@prisma/client";
+import { UpdateHomeworkResultDto } from "./dto/update-homework-result.dto";
 export declare class HomeworkResultService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -31,11 +32,32 @@ export declare class HomeworkResultService {
             updated_at: Date;
             title: string;
             teacherId: number | null;
+            score: number;
             userId: number | null;
             studentId: number;
             file: string | null;
             homeworkId: number;
-            score: number;
         })[];
     }>;
+    getOneHomeworkResult(id: number): Promise<{
+        success: boolean;
+        data: {
+            id: number;
+            status: import("@prisma/client").$Enums.HomeworkStatus;
+            created_at: Date;
+            updated_at: Date;
+            title: string;
+            teacherId: number | null;
+            score: number;
+            userId: number | null;
+            studentId: number;
+            file: string | null;
+            homeworkId: number;
+        };
+    }>;
+    updateHomeworkResult(id: number, payload: UpdateHomeworkResultDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteHomeworkResult(id: number): Promise<void>;
 }

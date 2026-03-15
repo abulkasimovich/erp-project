@@ -157,6 +157,34 @@ let GroupsService = class GroupsService {
             message: 'Group created',
         };
     }
+    async getOneGroup(id) {
+        const group = await this.prisma.group.findUnique({ where: { id } });
+        if (!group) {
+            throw new common_1.NotFoundException('Group is Not found');
+        }
+        return {
+            success: true,
+            data: group,
+        };
+    }
+    async updateGroup(id, payload) {
+        const group = await this.prisma.group.findUnique({ where: { id } });
+        if (!group) {
+            throw new common_1.NotFoundException('Group is Not found');
+        }
+        await this.prisma.group.update({ where: { id }, data: payload });
+        return {
+            success: true,
+            message: 'Group updated successfully',
+        };
+    }
+    async deleteGroup(id) {
+        const group = await this.prisma.group.findUnique({ where: { id } });
+        if (!group) {
+            throw new common_1.NotFoundException('Group is Not found');
+        }
+        await this.prisma.group.delete({ where: { id } });
+    }
 };
 exports.GroupsService = GroupsService;
 exports.GroupsService = GroupsService = __decorate([

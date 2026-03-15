@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -15,6 +17,8 @@ import { Role } from '@prisma/client';
 import { Roles } from 'src/common/decorator/role';
 import { CreateGroupDto } from './dto/create.group.dto';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { UpdateCourseDto } from '../course/dto/update.course.dto';
+import { UpdateGroupDto } from './dto/update.group.dto';
 
 @Controller('groups')
 @ApiBearerAuth()
@@ -57,5 +61,27 @@ export class GroupsController {
   @Post()
   createGroup(@Body() payload: CreateGroupDto, @Req() req: Request) {
     return this.groupService.createGroup(payload, req['user']);
+  }
+
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Get(":id")
+  getOneGroup(@Param('id') id: string) {
+    return this.groupService.getOneGroup(+id);
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Put(":id")
+  updateGroup(@Param('id') id: string, @Body() payload: UpdateGroupDto) {
+    return this.groupService.updateGroup(+id, payload);
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Delete(":id")
+  deleteGroup(@Param('id') id: string) {
+    return this.groupService.deleteGroup(+id);
   }
 }

@@ -1,5 +1,6 @@
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateStudentDto } from './dto/update-student.dto';
 export declare class StudentsController {
     private readonly studentsService;
     constructor(studentsService: StudentsService);
@@ -35,4 +36,9 @@ export declare class StudentsController {
             birth_date: Date;
         };
     }>;
+    updateStudent(id: string, payload: UpdateStudentDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteStudent(id: string): void;
 }

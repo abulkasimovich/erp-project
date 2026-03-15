@@ -6,10 +6,11 @@ import {
 import { PrismaService } from 'src/database/prisma.service';
 import { CreateStudentGroupDto } from './dto/create.studentgroup.dto';
 import { Status } from '@prisma/client';
+import { UpdateStudentGroupDto } from './dto/update.student-group.dto';
 
 @Injectable()
 export class StudentGroupService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async createStudentGroup(
     payload: CreateStudentGroupDto,
@@ -60,4 +61,41 @@ export class StudentGroupService {
       message: 'Student added group',
     };
   }
+
+  async getOneStudentGroup(id: number) {
+    const studentGroup = await this.prisma.studentGroup.findUnique({ where: { id } });
+    if (!studentGroup) {
+      throw new NotFoundException('StudentGroup is Not found');
+    }
+
+    return {
+      success: true,
+      data: studentGroup,
+    };
+  }
+
+  async updateStudentGroup(id: number, payload: UpdateStudentGroupDto) {
+    const studentGroup = await this.prisma.studentGroup.findUnique({ where: { id } });
+    if (!studentGroup) {
+      throw new NotFoundException('StudentGroup is Not found');
+    }
+    await this.prisma.studentGroup.update({ where: { id }, data: payload });
+
+    return {
+      success: true,
+      message: 'StudentGroup updated successfully',
+    };
+  }
+
+  async deleteStudentGroup(id: number) {
+    const studentGroup = await this.prisma.studentGroup.findUnique({ where: { id } });
+    if (!studentGroup) {
+      throw new NotFoundException('StudentGroup is Not found');
+    }
+    await this.prisma.studentGroup.delete({ where: { id } });
+  }
+
+
+
+
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Req, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Req, UseGuards, ParseIntPipe, Put } from '@nestjs/common';
 
 import { CreateHomeworkDto } from './dto/create-homework.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -12,6 +12,7 @@ import { Role } from '@prisma/client';
 import { AuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/role-guard';
 import { group } from 'console';
+import { UpdateHomeworkDto } from './dto/updatehomework.dto';
 
 @Controller('homework')
 @ApiBearerAuth()
@@ -25,7 +26,7 @@ export class HomeworkController {
   getAllHomeworksByGroup(
     @Param("groupId", ParseIntPipe) groupId: number,
     @Req() req: Request
-  ){
+  ) {
     return this.homeworkService.getAllHomeworkByGroup(groupId, req['user'])
   }
 
@@ -38,7 +39,7 @@ export class HomeworkController {
       type: 'object',
       properties: {
         title: { type: "string" },
-        groupId: {type:"number"},
+        groupId: { type: "number" },
         lessonId: { type: "number" },
         file: { type: "string", format: "binary", nullable: true }
       }
@@ -62,19 +63,25 @@ export class HomeworkController {
     return this.homeworkService.createHomework(payload, req["user"], file?.filename)
   }
 
-  //   @Get()
-  //   findAll() {
-  //     return this.homeworkService.findAll();
-  //   }
 
-  //   @Get(':id')
-  //   findOne(@Param('id') id: string) {
-  //     return this.homeworkService.findOne(+id);
-  //   }
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Get(":id")
+  getOneHomework(@Param('id') id: string) {
+    return this.homeworkService.getOneHomework(+id);
+  }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Put(":id")
+  updateHomework(@Param('id') id: string, @Body() payload: UpdateHomeworkDto) {
+    return this.homeworkService.updateHomework(+id, payload);
+  }
 
-  //   @Delete(':id')
-  //   remove(@Param('id') id: string) {
-  //     return this.homeworkService.remove(+id);
-  //   }
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Delete(":id")
+  deleteHomework(@Param('id') id: string) {
+    return this.homeworkService.deleteHomework(+id);
+  }
 }

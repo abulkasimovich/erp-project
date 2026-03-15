@@ -71,21 +71,29 @@ export class UsersController {
     return this.userService.createUser(payload, file.filename);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
   @Get()
   getAllUser() {
     return this.userService.getAllUsers();
   }
 
-  @Get()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Get(":id")
   getOneUser(@Param('id') id: string) {
     return this.userService.getOneUser(+id);
   }
 
-  @Put()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Put(":id")
   updateUser(@Param('id') id: string, @Body() payload: UpdateUserDto) {
     return this.userService.updateUser(+id, payload);
   }
 
-  @Delete()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Delete(":id")
   deleteUser(@Param('id') id: string) {}
 }

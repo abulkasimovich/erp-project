@@ -5,7 +5,9 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  UseGuards
+  UseGuards,
+  Put,
+  Delete
 } from "@nestjs/common";
 
 import { RatingService } from "./rating.service";
@@ -23,13 +25,14 @@ import { Roles } from "src/common/decorator/role";
 
 import { Role } from "@prisma/client";
 import { CreateRatingDto } from "./dto/create-rating.dto";
+import { UpdateRatingDto } from "./dto/update-rating.dto";
 
 @Controller("rating")
 @ApiTags("Rating")
 @ApiBearerAuth()
 export class RatingController {
 
-  constructor(private service: RatingService) {}
+  constructor(private service: RatingService) { }
 
   @ApiOperation({ summary: `${Role.TEACHER}, ${Role.ADMIN}, ${Role.SUPERADMIN}` })
 
@@ -48,11 +51,11 @@ export class RatingController {
   })
 
   @Post()
-createRating(@Body() payload: CreateRatingDto) {
-  return this.service.createRating(payload);
-}
+  createRating(@Body() payload: CreateRatingDto) {
+    return this.service.createRating(payload);
+  }
 
- @ApiOperation({ summary: `${Role.SUPERADMIN}, ${Role.ADMIN}, ${Role.TEACHER}` })
+  @ApiOperation({ summary: `${Role.SUPERADMIN}, ${Role.ADMIN}, ${Role.TEACHER}` })
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.SUPERADMIN, Role.ADMIN)
   @Get("teacher/:teacherId")
@@ -62,4 +65,24 @@ createRating(@Body() payload: CreateRatingDto) {
     return this.service.getRatings(teacherId);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Get(":id")
+  getOneHomeworkResponse(@Param('id') id: string) {
+    return this.service.getRatings(+id);
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Put(":id")
+  updateLesson(@Param('id') id: string, @Body() payload: UpdateRatingDto) {
+    return this.service.updateRating(+id, payload);
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Delete(":id")
+  deleteRating(@Param('id') id: string) {
+    return this.service.deleteRating(+id);
+  }
 }

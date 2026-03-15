@@ -1,6 +1,7 @@
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { Role } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
+import { UpdateLessonDto } from './dto/update-lesson.dto';
 export declare class LessonsService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -18,4 +19,21 @@ export declare class LessonsService {
         success: boolean;
         message: string;
     }>;
+    getOneLesson(id: number): Promise<{
+        success: boolean;
+        data: {
+            id: number;
+            created_at: Date;
+            updated_at: Date;
+            title: string;
+            teacherId: number | null;
+            userId: number | null;
+            groupId: number;
+        };
+    }>;
+    updateLesson(id: number, payload: UpdateLessonDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteLesson(id: number): Promise<void>;
 }

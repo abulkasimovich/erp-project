@@ -87,6 +87,34 @@ let LessonVideoService = class LessonVideoService {
             message: "lessonvideo created successfully"
         };
     }
+    async getOneLessonVideo(id) {
+        const lessonVideo = await this.prisma.lessonVideo.findUnique({ where: { id } });
+        if (!lessonVideo) {
+            throw new common_1.NotFoundException('lesson video is Not found');
+        }
+        return {
+            success: true,
+            data: lessonVideo,
+        };
+    }
+    async updateLessonVideo(id, payload) {
+        const lessonVideo = await this.prisma.lessonVideo.findUnique({ where: { id } });
+        if (!lessonVideo) {
+            throw new common_1.NotFoundException('lesson video is Not found');
+        }
+        await this.prisma.lessonVideo.update({ where: { id }, data: payload });
+        return {
+            success: true,
+            message: 'lesson video updated successfully',
+        };
+    }
+    async deleteLessonVideo(id) {
+        const lessonVideo = await this.prisma.lessonVideo.findUnique({ where: { id } });
+        if (!lessonVideo) {
+            throw new common_1.NotFoundException('lesson video is Not found');
+        }
+        await this.prisma.lessonVideo.delete({ where: { id } });
+    }
 };
 exports.LessonVideoService = LessonVideoService;
 exports.LessonVideoService = LessonVideoService = __decorate([

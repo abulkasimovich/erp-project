@@ -76,16 +76,22 @@ export class TeachersController {
     return this.teachersService.getAllTeachers();
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
   @Get(':id')
   getOneTeacher(@Param('id') id: string) {
     return this.teachersService.getOneTeacher(+id);
   }
 
-  @Put()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Put(":id")
   updateTeacher(@Param('id') id: string, @Body() payload: UpdateTeacherDto) {
     return this.teachersService.updateTeacher(+id, payload);
   }
 
-  @Delete()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @Delete(":id")
   deleteTeacher(@Param('id') id: string) {}
 }

@@ -1,4 +1,5 @@
 import { HomeworkResultService } from "./homework-result.service";
+import { UpdateHomeworkResultDto } from "./dto/update-homework-result.dto";
 export declare class HomeworkResultController {
     private service;
     constructor(service: HomeworkResultService);
@@ -27,11 +28,32 @@ export declare class HomeworkResultController {
             updated_at: Date;
             title: string;
             teacherId: number | null;
+            score: number;
             userId: number | null;
             studentId: number;
             file: string | null;
             homeworkId: number;
-            score: number;
         })[];
     }>;
+    getOneHomeworkResult(id: string): Promise<{
+        success: boolean;
+        data: {
+            id: number;
+            status: import("@prisma/client").$Enums.HomeworkStatus;
+            created_at: Date;
+            updated_at: Date;
+            title: string;
+            teacherId: number | null;
+            score: number;
+            userId: number | null;
+            studentId: number;
+            file: string | null;
+            homeworkId: number;
+        };
+    }>;
+    updateHomeworkResult(id: string, payload: UpdateHomeworkResultDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteHomeworkResult(id: string): Promise<void>;
 }

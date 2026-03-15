@@ -1,5 +1,6 @@
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create.group.dto';
+import { UpdateGroupDto } from './dto/update.group.dto';
 export declare class GroupsController {
     private readonly groupService;
     constructor(groupService: GroupsService);
@@ -46,4 +47,27 @@ export declare class GroupsController {
         success: boolean;
         message: string;
     }>;
+    getOneGroup(id: string): Promise<{
+        success: boolean;
+        data: {
+            id: number;
+            status: import("@prisma/client").$Enums.UserStatus;
+            created_at: Date;
+            updated_at: Date;
+            name: string;
+            capacity: number;
+            teacherId: number;
+            roomId: number;
+            courseId: number;
+            startDate: Date;
+            startTime: string;
+            weekDays: import("@prisma/client").$Enums.WeekDays[];
+            userId: number;
+        };
+    }>;
+    updateGroup(id: string, payload: UpdateGroupDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteGroup(id: string): Promise<void>;
 }

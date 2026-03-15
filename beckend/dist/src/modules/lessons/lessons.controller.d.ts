@@ -1,5 +1,6 @@
 import { LessonsService } from './lessons.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
+import { UpdateLessonDto } from './dto/update-lesson.dto';
 export declare class LessonsController {
     private readonly lessonServise;
     constructor(lessonServise: LessonsService);
@@ -14,4 +15,21 @@ export declare class LessonsController {
         success: boolean;
         message: string;
     }>;
+    getOneHomeworkResponse(id: string): Promise<{
+        success: boolean;
+        data: {
+            id: number;
+            created_at: Date;
+            updated_at: Date;
+            title: string;
+            teacherId: number | null;
+            userId: number | null;
+            groupId: number;
+        };
+    }>;
+    updateLesson(id: string, payload: UpdateLessonDto): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    deleteLesson(id: string): Promise<void>;
 }

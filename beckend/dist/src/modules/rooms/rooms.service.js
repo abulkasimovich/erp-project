@@ -41,6 +41,34 @@ let RoomsService = class RoomsService {
             message: 'Room created',
         };
     }
+    async getOneRoom(id) {
+        const room = await this.prisma.room.findUnique({ where: { id } });
+        if (!room) {
+            throw new common_1.NotFoundException('rating is Not found');
+        }
+        return {
+            success: true,
+            data: room,
+        };
+    }
+    async updateRoom(id, payload) {
+        const room = await this.prisma.room.findUnique({ where: { id } });
+        if (!room) {
+            throw new common_1.NotFoundException('room is Not found');
+        }
+        await this.prisma.room.update({ where: { id }, data: payload });
+        return {
+            success: true,
+            message: 'room updated successfully',
+        };
+    }
+    async deleteRoom(id) {
+        const room = await this.prisma.room.findUnique({ where: { id } });
+        if (!room) {
+            throw new common_1.NotFoundException('room is Not found');
+        }
+        await this.prisma.room.delete({ where: { id } });
+    }
 };
 exports.RoomsService = RoomsService;
 exports.RoomsService = RoomsService = __decorate([

@@ -8,37 +8,39 @@ import {
 import { CreateGroupDto } from './dto/create.group.dto';
 import { Role, Status, WeekDays } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
+import { UpdateCourseDto } from '../course/dto/update.course.dto';
+import { UpdateGroupDto } from './dto/update.group.dto';
 
 @Injectable()
 export class GroupsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async getAllStudentGroupById(groupId: number) {
-        const groups = await this.prisma.studentGroup.findMany({
-            where: { 
-                groupId,
-                status: Status.ACTIVE
-             },
-            select: {
-                id: true,
-                student: {
-                    select: {
-                        id: true,
-                        fullName: true,
-                        photo: true,
-                        email: true
-                    }
-                }
-            }
-        })
-
-        const formattedGroups = groups.map(group => group.student)
-
-        return {
-            success: true,
-            data: formattedGroups
+    const groups = await this.prisma.studentGroup.findMany({
+      where: {
+        groupId,
+        status: Status.ACTIVE
+      },
+      select: {
+        id: true,
+        student: {
+          select: {
+            id: true,
+            fullName: true,
+            photo: true,
+            email: true
+          }
         }
+      }
+    })
+
+    const formattedGroups = groups.map(group => group.student)
+
+    return {
+      success: true,
+      data: formattedGroups
     }
+  }
 
   async getGroupLessons(
     groupId: number,
@@ -182,4 +184,40 @@ export class GroupsService {
       message: 'Group created',
     };
   }
+
+
+  async getOneGroup(id: number) {
+    const group = await this.prisma.group.findUnique({ where: { id } });
+    if (!group) {
+      throw new NotFoundException('Group is Not found');
+    }
+
+    return {
+      success: true,
+      data: group,
+    };
+  }
+
+  async updateGroup(id: number, payload: UpdateGroupDto) {
+    const group = await this.prisma.group.findUnique({ where: { id } });
+    if (!group) {
+      throw new NotFoundException('Group is Not found');
+    }
+    await this.prisma.group.update({ where: { id }, data: payload });
+
+    return {
+      success: true,
+      message: 'Group updated successfully',
+    };
+  }
+
+  async deleteGroup(id: number) {
+    const group = await this.prisma.group.findUnique({ where: { id } });
+    if (!group) {
+      throw new NotFoundException('Group is Not found');
+    }
+    await this.prisma.group.delete({ where: { id } });
+  }
+
+
 }

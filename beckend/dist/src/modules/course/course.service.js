@@ -41,6 +41,34 @@ let CourseService = class CourseService {
             message: 'Course created',
         };
     }
+    async getOneCourse(id) {
+        const course = await this.prisma.course.findUnique({ where: { id } });
+        if (!course) {
+            throw new common_1.NotFoundException('course is Not found');
+        }
+        return {
+            success: true,
+            data: course,
+        };
+    }
+    async updateCourse(id, payload) {
+        const course = await this.prisma.course.findUnique({ where: { id } });
+        if (!course) {
+            throw new common_1.NotFoundException('course is Not found');
+        }
+        await this.prisma.course.update({ where: { id }, data: payload });
+        return {
+            success: true,
+            message: 'course updated successfully',
+        };
+    }
+    async deleteCourse(id) {
+        const course = await this.prisma.course.findUnique({ where: { id } });
+        if (!course) {
+            throw new common_1.NotFoundException('course is Not found');
+        }
+        await this.prisma.course.delete({ where: { id } });
+    }
 };
 exports.CourseService = CourseService;
 exports.CourseService = CourseService = __decorate([

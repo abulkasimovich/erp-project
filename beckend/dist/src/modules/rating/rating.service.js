@@ -48,6 +48,34 @@ let RatingService = class RatingService {
             data: ratings
         };
     }
+    async getOneRating(id) {
+        const rating = await this.prisma.rating.findUnique({ where: { id } });
+        if (!rating) {
+            throw new common_1.NotFoundException('rating is Not found');
+        }
+        return {
+            success: true,
+            data: rating,
+        };
+    }
+    async updateRating(id, payload) {
+        const rating = await this.prisma.rating.findUnique({ where: { id } });
+        if (!rating) {
+            throw new common_1.NotFoundException('rating is Not found');
+        }
+        await this.prisma.rating.update({ where: { id }, data: payload });
+        return {
+            success: true,
+            message: 'rating updated successfully',
+        };
+    }
+    async deleteRating(id) {
+        const rating = await this.prisma.rating.findUnique({ where: { id } });
+        if (!rating) {
+            throw new common_1.NotFoundException('rating is Not found');
+        }
+        await this.prisma.rating.delete({ where: { id } });
+    }
 };
 exports.RatingService = RatingService;
 exports.RatingService = RatingService = __decorate([

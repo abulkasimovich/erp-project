@@ -58,6 +58,34 @@ let LessonsService = class LessonsService {
             message: "Lesson created successfully"
         };
     }
+    async getOneLesson(id) {
+        const lesson = await this.prisma.lesson.findUnique({ where: { id } });
+        if (!lesson) {
+            throw new common_1.NotFoundException('lesson is Not found');
+        }
+        return {
+            success: true,
+            data: lesson,
+        };
+    }
+    async updateLesson(id, payload) {
+        const lesson = await this.prisma.lesson.findUnique({ where: { id } });
+        if (!lesson) {
+            throw new common_1.NotFoundException('lesson is Not found');
+        }
+        await this.prisma.lesson.update({ where: { id }, data: payload });
+        return {
+            success: true,
+            message: 'lesson updated successfully',
+        };
+    }
+    async deleteLesson(id) {
+        const lesson = await this.prisma.lesson.findUnique({ where: { id } });
+        if (!lesson) {
+            throw new common_1.NotFoundException('lesson is Not found');
+        }
+        await this.prisma.lesson.delete({ where: { id } });
+    }
 };
 exports.LessonsService = LessonsService;
 exports.LessonsService = LessonsService = __decorate([

@@ -89,6 +89,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TeachersController.prototype, "getAllTeacher", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -96,7 +98,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TeachersController.prototype, "getOneTeacher", null);
 __decorate([
-    (0, common_1.Put)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Put)(":id"),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -104,7 +108,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TeachersController.prototype, "updateTeacher", null);
 __decorate([
-    (0, common_1.Delete)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Delete)(":id"),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

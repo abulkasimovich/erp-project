@@ -3,6 +3,7 @@ import { CreateLessonVideoDto } from './dto/create-lesson-video.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { Role } from '@prisma/client';
 import { title } from 'process';
+import { UpdateLessonVideoDto } from './dto/update-lesson-video.dto';
 // import { UpdateLessonVideoDto } from './dto/update-lesson-video.dto';
 
 @Injectable()
@@ -90,4 +91,38 @@ export class LessonVideoService {
       message: "lessonvideo created successfully"
     }
   }
+
+  async getOneLessonVideo(id: number) {
+    const lessonVideo = await this.prisma.lessonVideo.findUnique({ where: { id } });
+    if (!lessonVideo) {
+      throw new NotFoundException('lesson video is Not found');
+    }
+
+        return {
+          success: true,
+          data: lessonVideo,
+        };
+      }
+
+      async updateLessonVideo(id: number, payload: UpdateLessonVideoDto) {
+        const lessonVideo = await this.prisma.lessonVideo.findUnique({ where: { id } });
+        if (!lessonVideo) {
+          throw new NotFoundException('lesson video is Not found');
+        }
+        await this.prisma.lessonVideo.update({ where: { id }, data: payload });
+  
+        return {
+          success: true,
+          message: 'lesson video updated successfully',
+        };
+      }
+
+      async deleteLessonVideo(id: number) {
+        const lessonVideo = await this.prisma.lessonVideo.findUnique({ where: { id } });
+        if (!lessonVideo) {
+          throw new NotFoundException('lesson video is Not found');
+        }
+        await this.prisma.lessonVideo.delete({ where: { id } });
+
+      }
 }

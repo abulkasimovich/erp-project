@@ -1,9 +1,10 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma.service";
 import { Role } from "@prisma/client";
+import { UpdateHomeworkResponseDto } from "./dto/update-homework-response.dto";
 
 @Injectable()
-export class HomeworkResponseService {
+export class homeworkResponseService {
   constructor(private prisma: PrismaService) {}
 
   async createResponse(payload: any, currentUser: { id: number; role: Role }, filename?: string) {
@@ -55,4 +56,39 @@ export class HomeworkResponseService {
       data: responses
     };
   }
+
+  async getOneHomeworkResponse(id: number) {
+      const homeworkResponse = await this.prisma.homeworkResponse.findUnique({ where: { id } });
+      if (!homeworkResponse) {
+        throw new NotFoundException('homework response response is Not found');
+      }
+  
+      return {
+        success: true,
+        data: homeworkResponse,
+      };
+    }
+  
+    async updateHomeworkResponse(id: number, payload: UpdateHomeworkResponseDto) {
+      const homeworkResponse = await this.prisma.homeworkResponse.findUnique({ where: { id } });
+      if (!homeworkResponse) {
+        throw new NotFoundException('homework response is Not found');
+      }
+      await this.prisma.homeworkResponse.update({ where: { id }, data: payload });
+
+      return {
+        success: true,
+        message: 'homework response updated successfully',
+      };
+    }
+
+    async deleteHomeworkResponse(id: number) {
+      const homeworkResponse = await this.prisma.homeworkResponse.findUnique({ where: { id } });
+      if (!homeworkResponse) {
+        throw new NotFoundException('homework response is Not found');
+      }
+      await this.prisma.homeworkResponse.delete({ where: { id } });
+        
+      }
+      
 }

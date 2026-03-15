@@ -57,6 +57,34 @@ let StudentGroupService = class StudentGroupService {
             message: 'Student added group',
         };
     }
+    async getOneStudentGroup(id) {
+        const studentGroup = await this.prisma.studentGroup.findUnique({ where: { id } });
+        if (!studentGroup) {
+            throw new common_1.NotFoundException('StudentGroup is Not found');
+        }
+        return {
+            success: true,
+            data: studentGroup,
+        };
+    }
+    async updateStudentGroup(id, payload) {
+        const studentGroup = await this.prisma.studentGroup.findUnique({ where: { id } });
+        if (!studentGroup) {
+            throw new common_1.NotFoundException('StudentGroup is Not found');
+        }
+        await this.prisma.studentGroup.update({ where: { id }, data: payload });
+        return {
+            success: true,
+            message: 'StudentGroup updated successfully',
+        };
+    }
+    async deleteStudentGroup(id) {
+        const studentGroup = await this.prisma.studentGroup.findUnique({ where: { id } });
+        if (!studentGroup) {
+            throw new common_1.NotFoundException('StudentGroup is Not found');
+        }
+        await this.prisma.studentGroup.delete({ where: { id } });
+    }
 };
 exports.StudentGroupService = StudentGroupService;
 exports.StudentGroupService = StudentGroupService = __decorate([

@@ -21,6 +21,7 @@ const role_guard_1 = require("../../../common/guards/role-guard");
 const role_1 = require("../../../common/decorator/role");
 const swagger_1 = require("@nestjs/swagger");
 const client_1 = require("@prisma/client");
+const update_student_group_dto_1 = require("./dto/update.student-group.dto");
 let StudentGroupController = class StudentGroupController {
     studentGroupServise;
     constructor(studentGroupServise) {
@@ -28,6 +29,15 @@ let StudentGroupController = class StudentGroupController {
     }
     createStudentGroup(payload, req) {
         return this.studentGroupServise.createStudentGroup(payload, req['user']);
+    }
+    getOneStudentGroup(id) {
+        return this.studentGroupServise.getOneStudentGroup(+id);
+    }
+    updateStudentGroup(id, payload) {
+        return this.studentGroupServise.updateStudentGroup(+id, payload);
+    }
+    deleteStudentGroup(id) {
+        return this.studentGroupServise.deleteStudentGroup(+id);
     }
 };
 exports.StudentGroupController = StudentGroupController;
@@ -45,6 +55,34 @@ __decorate([
         Request]),
     __metadata("design:returntype", void 0)
 ], StudentGroupController.prototype, "createStudentGroup", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], StudentGroupController.prototype, "getOneStudentGroup", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Put)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_student_group_dto_1.UpdateStudentGroupDto]),
+    __metadata("design:returntype", void 0)
+], StudentGroupController.prototype, "updateStudentGroup", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, role_1.Roles)(client_1.Role.ADMIN, client_1.Role.SUPERADMIN),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], StudentGroupController.prototype, "deleteStudentGroup", null);
 exports.StudentGroupController = StudentGroupController = __decorate([
     (0, common_1.Controller)('student-group'),
     (0, swagger_1.ApiBearerAuth)(),
