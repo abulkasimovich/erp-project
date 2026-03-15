@@ -16,7 +16,7 @@ import { HomeworkModule } from './modules/homework/homework.module';
 import { HomeworkResponseModule } from './modules/homework-response/homework-response.module';
 import { LessonVideoModule } from './modules/lesson-video/lesson-video.module';
 import { HomeworkResultModule } from './modules/homework-result/homework-result.module';
-// import { RatingModule } from './modules/rating/rating.module';
+import { RatingModule } from './modules/rating/rating.module';
 
 @Module({
   imports: [
@@ -38,7 +38,7 @@ import { HomeworkResultModule } from './modules/homework-result/homework-result.
     HomeworkResponseModule,
     LessonVideoModule,
     HomeworkResultModule,
-    // RatingModule,
+    RatingModule,
   ],
   providers: [UserSeeder],
 })

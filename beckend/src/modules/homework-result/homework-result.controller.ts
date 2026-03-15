@@ -1,34 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { HomeworkResultService } from './homework-result.service';
-import { CreateHomeworkResultDto } from './dto/create-homework-result.dto';
-import { UpdateHomeworkResultDto } from './dto/update-homework-result.dto';
+import { Controller, Post, Body, Req, UseGuards, Get, Param, ParseIntPipe } from "@nestjs/common";
+import { HomeworkResultService } from "./homework-result.service";
+import { AuthGuard } from "src/common/guards/jwt-auth.guard";
+import { RolesGuard } from "src/common/guards/role-guard";
+import { Roles } from "src/common/decorator/role";
+import { Role } from "@prisma/client";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation } from "@nestjs/swagger";
 
-@Controller('homework-result')
+@Controller("homework-result")
+@ApiBearerAuth()
 export class HomeworkResultController {
-  constructor(private readonly homeworkResultService: HomeworkResultService) {}
+
+  constructor(private service: HomeworkResultService) {}
+
+  @ApiOperation({ summary: `${Role.TEACHER}, ${Role.ADMIN}, ${Role.SUPERADMIN}` })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.TEACHER, Role.ADMIN, Role.SUPERADMIN)
+  
+    
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        responseId: { type: 'number' },
+        title: { type: 'string' },
+        score: { type: 'number' }
+      }
+    }
+  })
 
   @Post()
-  create(@Body() createHomeworkResultDto: CreateHomeworkResultDto) {
-    return this.homeworkResultService.create(createHomeworkResultDto);
+  giveScore(@Body() payload: any, @Req() req: Request) {
+    return this.service.giveScore(payload, req["user"]);
   }
 
-  @Get()
-  findAll() {
-    return this.homeworkResultService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.homeworkResultService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHomeworkResultDto: UpdateHomeworkResultDto) {
-    return this.homeworkResultService.update(+id, updateHomeworkResultDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.homeworkResultService.remove(+id);
+   @ApiOperation({ summary: `${Role.SUPERADMIN}, ${Role.ADMIN}, ${Role.TEACHER}` })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.SUPERADMIN, Role.ADMIN)
+  @Get("homework/:homeworkId")
+  getResults(@Param("homeworkId", ParseIntPipe) homeworkId: number) {
+    return this.service.getResults(homeworkId);
   }
 }

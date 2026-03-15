@@ -6,13 +6,16 @@ export declare class AuthController {
     login(payload: LoginDto): Promise<{
         success: boolean;
         accessToken: string;
+        role: import("@prisma/client").$Enums.Role;
     }>;
     loginTeacher(payload: LoginDto): Promise<{
         success: boolean;
         accessToken: string;
+        role: "TEACHER";
     }>;
     loginStudent(payload: LoginDto): Promise<{
         success: boolean;
         accessToken: string;
+        role: "STUDENT";
     }>;
 }

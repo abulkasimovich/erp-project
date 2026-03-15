@@ -45,6 +45,7 @@ export class AuthService {
     return {
       success: true,
       accessToken,
+      role: existEmail.role
     };
   }
 
@@ -72,6 +73,7 @@ export class AuthService {
     return {
       success: true,
       accessToken,
+      role: Role.TEACHER
     };
   }
 
@@ -99,6 +101,8 @@ export class AuthService {
     return {
       success: true,
       accessToken,
+      role: Role.STUDENT
+      
     };
   }
 }

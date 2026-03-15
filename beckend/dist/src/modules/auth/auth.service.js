@@ -78,6 +78,7 @@ let AuthService = class AuthService {
         return {
             success: true,
             accessToken,
+            role: existEmail.role
         };
     }
     async loginTeacher(payload) {
@@ -100,6 +101,7 @@ let AuthService = class AuthService {
         return {
             success: true,
             accessToken,
+            role: client_1.Role.TEACHER
         };
     }
     async loginStudent(payload) {
@@ -122,6 +124,7 @@ let AuthService = class AuthService {
         return {
             success: true,
             accessToken,
+            role: client_1.Role.STUDENT
         };
     }
 };

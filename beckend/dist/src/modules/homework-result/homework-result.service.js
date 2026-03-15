@@ -5,28 +5,58 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HomeworkResultService = void 0;
 const common_1 = require("@nestjs/common");
+const prisma_service_1 = require("../../database/prisma.service");
+const client_1 = require("@prisma/client");
 let HomeworkResultService = class HomeworkResultService {
-    create(createHomeworkResultDto) {
-        return 'This action adds a new homeworkResult';
+    prisma;
+    constructor(prisma) {
+        this.prisma = prisma;
     }
-    findAll() {
-        return `This action returns all homeworkResult`;
+    async giveScore(payload, currentUser) {
+        const response = await this.prisma.homeworkResponse.findUnique({
+            where: { id: Number(payload.responseId) }
+        });
+        if (!response) {
+            throw new common_1.NotFoundException("Homework response topilmadi");
+        }
+        await this.prisma.homeworkResult.create({
+            data: {
+                homeworkId: response.homeworkId,
+                studentId: response.studentId,
+                title: payload.title,
+                score: payload.score,
+                status: "PENDING",
+                teacherId: currentUser.role === client_1.Role.TEACHER ? currentUser.id : null,
+                userId: currentUser.role !== client_1.Role.TEACHER ? currentUser.id : null
+            }
+        });
+        return {
+            success: true,
+            message: "Homework baholandi"
+        };
     }
-    findOne(id) {
-        return `This action returns a #${id} homeworkResult`;
-    }
-    update(id, updateHomeworkResultDto) {
-        return `This action updates a #${id} homeworkResult`;
-    }
-    remove(id) {
-        return `This action removes a #${id} homeworkResult`;
+    async getResults(homeworkId) {
+        const results = await this.prisma.homeworkResult.findMany({
+            where: { homeworkId },
+            include: {
+                student: true
+            }
+        });
+        return {
+            success: true,
+            data: results
+        };
     }
 };
 exports.HomeworkResultService = HomeworkResultService;
 exports.HomeworkResultService = HomeworkResultService = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], HomeworkResultService);
 //# sourceMappingURL=homework-result.service.js.map

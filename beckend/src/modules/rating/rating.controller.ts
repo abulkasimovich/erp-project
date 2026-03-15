@@ -1,34 +1,65 @@
-// import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-// import { RatingService } from './rating.service';
-// import { CreateRatingDto } from './dto/create-rating.dto';
-// import { UpdateRatingDto } from './dto/update-rating.dto';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  ParseIntPipe,
+  UseGuards
+} from "@nestjs/common";
 
-// @Controller('rating')
-// export class RatingController {
-//   constructor(private readonly ratingService: RatingService) {}
+import { RatingService } from "./rating.service";
 
-//   @Post()
-//   create(@Body() createRatingDto: CreateRatingDto) {
-//     return this.ratingService.create(createRatingDto);
-//   }
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiTags
+} from "@nestjs/swagger";
 
-//   @Get()
-//   findAll() {
-//     return this.ratingService.findAll();
-//   }
+import { AuthGuard } from "src/common/guards/jwt-auth.guard";
+import { RolesGuard } from "src/common/guards/role-guard";
+import { Roles } from "src/common/decorator/role";
 
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.ratingService.findOne(+id);
-//   }
+import { Role } from "@prisma/client";
+import { CreateRatingDto } from "./dto/create-rating.dto";
 
-//   @Patch(':id')
-//   update(@Param('id') id: string, @Body() updateRatingDto: UpdateRatingDto) {
-//     return this.ratingService.update(+id, updateRatingDto);
-//   }
+@Controller("rating")
+@ApiTags("Rating")
+@ApiBearerAuth()
+export class RatingController {
 
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.ratingService.remove(+id);
-//   }
-// }
+  constructor(private service: RatingService) {}
+
+  @ApiOperation({ summary: `${Role.TEACHER}, ${Role.ADMIN}, ${Role.SUPERADMIN}` })
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        teacherId: { type: "number" },
+        lessonId: { type: "number" },
+        score: { type: "number" }
+      }
+    }
+  })
+
+  @Post()
+createRating(@Body() payload: CreateRatingDto) {
+  return this.service.createRating(payload);
+}
+
+ @ApiOperation({ summary: `${Role.SUPERADMIN}, ${Role.ADMIN}, ${Role.TEACHER}` })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.SUPERADMIN, Role.ADMIN)
+  @Get("teacher/:teacherId")
+  getRatings(
+    @Param("teacherId", ParseIntPipe) teacherId: number
+  ) {
+    return this.service.getRatings(teacherId);
+  }
+
+}

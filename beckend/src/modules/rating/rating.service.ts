@@ -1,26 +1,47 @@
-// import { Injectable } from '@nestjs/common';
-// import { CreateRatingDto } from './dto/create-rating.dto';
-// import { UpdateRatingDto } from './dto/update-rating.dto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "src/database/prisma.service";
 
-// @Injectable()
-// export class RatingService {
-//   create(createRatingDto: CreateRatingDto) {
-//     return 'This action adds a new rating';
-//   }
+@Injectable()
+export class RatingService {
 
-//   findAll() {
-//     return `This action returns all rating`;
-//   }
+  constructor(private prisma: PrismaService) {}
 
-//   findOne(id: number) {
-//     return `This action returns a #${id} rating`;
-//   }
+  async createRating(payload: any) {
 
-//   update(id: number, updateRatingDto: UpdateRatingDto) {
-//     return `This action updates a #${id} rating`;
-//   }
+    const teacher = await this.prisma.teacher.findUnique({
+      where: { id: Number(payload.teacherId) }
+    });
 
-//   remove(id: number) {
-//     return `This action removes a #${id} rating`;
-//   }
-// }
+    if (!teacher) {
+      throw new NotFoundException("Teacher topilmadi");
+    }
+
+    await this.prisma.rating.create({
+      data: {
+        teacherId: payload.teacherId,
+        lessonId: payload.lessonId,
+        score: payload.score
+      }
+    });
+
+    return {
+      success: true,
+      message: "Rating qo'shildi"
+    };
+  }
+
+  async getRatings(teacherId: number) {
+
+    const ratings = await this.prisma.rating.findMany({
+      where: { teacherId },
+      include: {
+        lesson: true
+      }
+    });
+
+    return {
+      success: true,
+      data: ratings
+    };
+  }
+}

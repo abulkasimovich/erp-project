@@ -25,6 +25,7 @@ const homework_module_1 = require("./modules/homework/homework.module");
 const homework_response_module_1 = require("./modules/homework-response/homework-response.module");
 const lesson_video_module_1 = require("./modules/lesson-video/lesson-video.module");
 const homework_result_module_1 = require("./modules/homework-result/homework-result.module");
+const rating_module_1 = require("./modules/rating/rating.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -49,6 +50,7 @@ exports.AppModule = AppModule = __decorate([
             homework_response_module_1.HomeworkResponseModule,
             lesson_video_module_1.LessonVideoModule,
             homework_result_module_1.HomeworkResultModule,
+            rating_module_1.RatingModule,
         ],
         providers: [user_seeder_1.UserSeeder],
     })

@@ -1,9 +1,38 @@
-import { CreateHomeworkResponseDto } from './dto/create-homework-response.dto';
-import { UpdateHomeworkResponseDto } from './dto/update-homework-response.dto';
+import { PrismaService } from "src/database/prisma.service";
+import { Role } from "@prisma/client";
 export declare class HomeworkResponseService {
-    create(createHomeworkResponseDto: CreateHomeworkResponseDto): string;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateHomeworkResponseDto: UpdateHomeworkResponseDto): string;
-    remove(id: number): string;
+    private prisma;
+    constructor(prisma: PrismaService);
+    createResponse(payload: any, currentUser: {
+        id: number;
+        role: Role;
+    }, filename?: string): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    getResponses(homeworkId: number): Promise<{
+        success: boolean;
+        data: ({
+            student: {
+                fullName: string;
+                email: string;
+                password: string;
+                id: number;
+                photo: string | null;
+                status: import("@prisma/client").$Enums.UserStatus;
+                created_at: Date;
+                updated_at: Date;
+                birth_date: Date;
+            };
+        } & {
+            id: number;
+            status: import("@prisma/client").$Enums.HomeworkStatusStudent;
+            created_at: Date;
+            updated_at: Date;
+            title: string;
+            studentId: number;
+            file: string | null;
+            homeworkId: number;
+        })[];
+    }>;
 }
