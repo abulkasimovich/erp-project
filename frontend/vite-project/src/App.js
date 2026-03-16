@@ -1,16 +1,3 @@
-// src/App.js
-// ============================================================
-// Main app file. Sets up routing:
-// - /login         → LoginPage
-// - /              → Layout with sidebar
-//   - /            → Dashboard (Boshqarish)
-//   - /groups      → Groups list
-//   - /groups/:id  → Group detail (lessons, homework, videos)
-//   - /teachers    → Teachers list
-//   - /students    → Students list
-//   - /staff       → Staff list
-// ============================================================
-
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -41,8 +28,7 @@ function AppRoutes() {
         path="/login"
         element={isLoggedIn ? <Navigate to="/" replace /> : <LoginPage />}
       />
-
-      {/* Protected — all inside Layout (sidebar + topbar) */}
+      
       <Route
         path="/"
         element={
