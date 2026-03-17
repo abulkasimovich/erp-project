@@ -110,7 +110,7 @@ export default function Layout() {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
             </svg>
           </div>
-          {sidebarOpen && <span className="font-bold text-gray-900 text-base">EduCoin</span>}
+          {sidebarOpen && <span className="font-bold text-gray-900 text-base">CRM EDU</span>}
         </div>
 
         {/* Nav */}
