@@ -13,6 +13,19 @@ export class TeachersService {
   ) {}
 
   async createTeacher(payload: CreateTeacherDto, filename: string) {
+
+     // 1️⃣ Avval email bazada bormi tekshiramiz
+  const existing = await this.prisma.teacher.findUnique({
+    where: { email: payload.email },
+  });
+
+  if (existing) {
+    return {
+      success: false,
+      message: 'This email is already registered',
+    };
+  }
+
     await this.prisma.teacher.create({
       data: {
         ...payload,
@@ -20,6 +33,8 @@ export class TeachersService {
         photo: filename ?? null,
       },
     });
+
+  
 
     await this.mailerService.sendEmail(
       payload.email,
@@ -69,9 +84,17 @@ export class TeachersService {
 
   async deleteTeacher(id: number) {
     const Teacher = await this.prisma.teacher.findUnique({ where: { id } });
-    if (!Teacher) {
-      throw new NotFoundException('Teacher is Not found');
-    }
+    if (!Teacher) throw new NotFoundException('Teacher is Not found');
+
+    // Bog'liq ma'lumotlarni avval o'chirish (cascade)
+    await this.prisma.rating.deleteMany({ where: { teacherId: id } });
+
+    // Guruhlardan teacherId ni null qilish (guruhni o'chirmaylik)
+    await this.prisma.group.updateMany({
+      where: { teacherId: id },
+      data: { teacherId: {} },
+    });
+
     await this.prisma.teacher.delete({ where: { id } });
   }
 }

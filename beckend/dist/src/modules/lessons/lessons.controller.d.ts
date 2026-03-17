@@ -21,9 +21,9 @@ export declare class LessonsController {
             id: number;
             created_at: Date;
             updated_at: Date;
+            userId: number | null;
             title: string;
             teacherId: number | null;
-            userId: number | null;
             groupId: number;
         };
     }>;

@@ -66,7 +66,7 @@ export class TeachersController {
     @Body() payload: CreateTeacherDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.teachersService.createTeacher(payload, file.filename);
+    return this.teachersService.createTeacher(payload, file?.filename);
   }
 
   @UseGuards(AuthGuard, RolesGuard)

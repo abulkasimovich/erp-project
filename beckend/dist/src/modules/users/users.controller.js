@@ -30,7 +30,7 @@ let UsersController = class UsersController {
         this.userService = userService;
     }
     createUser(payload, file) {
-        return this.userService.createUser(payload, file.filename);
+        return this.userService.createUser(payload, file?.filename);
     }
     getAllUser() {
         return this.userService.getAllUsers();

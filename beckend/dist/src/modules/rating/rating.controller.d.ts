@@ -15,9 +15,9 @@ export declare class RatingController {
                 id: number;
                 created_at: Date;
                 updated_at: Date;
+                userId: number | null;
                 title: string;
                 teacherId: number | null;
-                userId: number | null;
                 groupId: number;
             };
         } & {
@@ -35,9 +35,9 @@ export declare class RatingController {
                 id: number;
                 created_at: Date;
                 updated_at: Date;
+                userId: number | null;
                 title: string;
                 teacherId: number | null;
-                userId: number | null;
                 groupId: number;
             };
         } & {

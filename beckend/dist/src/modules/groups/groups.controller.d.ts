@@ -19,9 +19,9 @@ export declare class GroupsController {
             id: number;
             created_at: Date;
             updated_at: Date;
+            userId: number | null;
             title: string;
             teacherId: number | null;
-            userId: number | null;
             groupId: number;
         }[];
     }>;
@@ -33,14 +33,14 @@ export declare class GroupsController {
             created_at: Date;
             updated_at: Date;
             name: string;
-            capacity: number;
+            userId: number;
             teacherId: number;
-            roomId: number;
-            courseId: number;
+            capacity: number;
             startDate: Date;
             startTime: string;
             weekDays: import("@prisma/client").$Enums.WeekDays[];
-            userId: number;
+            roomId: number;
+            courseId: number;
         }[];
     }>;
     createGroup(payload: CreateGroupDto, req: Request): Promise<{
@@ -55,14 +55,14 @@ export declare class GroupsController {
             created_at: Date;
             updated_at: Date;
             name: string;
-            capacity: number;
+            userId: number;
             teacherId: number;
-            roomId: number;
-            courseId: number;
+            capacity: number;
             startDate: Date;
             startTime: string;
             weekDays: import("@prisma/client").$Enums.WeekDays[];
-            userId: number;
+            roomId: number;
+            courseId: number;
         };
     }>;
     updateGroup(id: string, payload: UpdateGroupDto): Promise<{

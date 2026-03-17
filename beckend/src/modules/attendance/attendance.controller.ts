@@ -19,8 +19,7 @@ export class AttendanceController {
   @Get(":lessonId")
   getAttendanceByLesson(@Param("lessonId", ParseIntPipe) lessonId: number) {
     return this.attendanceService.getAttendanceByLesson(lessonId)
-  }
-
+  }  
 
   @ApiOperation({ summary: `${Role.ADMIN}, ${Role.TEACHER}`})
   @UseGuards(AuthGuard, RolesGuard)
@@ -29,7 +28,7 @@ export class AttendanceController {
   createAttendance(
     @Body() payload: CreateAttendanceDto,
     @Req() req: Request
-  ) {
+  ) {          
     return this.attendanceService.createAttendance(payload, req["user"])
   }
 }

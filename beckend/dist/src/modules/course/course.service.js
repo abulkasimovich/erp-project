@@ -67,6 +67,16 @@ let CourseService = class CourseService {
         if (!course) {
             throw new common_1.NotFoundException('course is Not found');
         }
+        const groups = await this.prisma.group.findMany({
+            where: { courseId: id },
+            select: { id: true },
+        });
+        const groupIds = groups.map(g => g.id);
+        if (groupIds.length > 0) {
+            await this.prisma.studentGroup.deleteMany({ where: { groupId: { in: groupIds } } });
+            await this.prisma.lesson.deleteMany({ where: { groupId: { in: groupIds } } });
+            await this.prisma.group.deleteMany({ where: { courseId: id } });
+        }
         await this.prisma.course.delete({ where: { id } });
     }
 };

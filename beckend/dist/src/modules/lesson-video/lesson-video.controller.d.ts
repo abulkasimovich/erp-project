@@ -23,9 +23,9 @@ export declare class LessonVideoController {
         data: {
             id: number;
             created_at: Date;
+            userId: number | null;
             teacherId: number | null;
             lessonId: number;
-            userId: number | null;
             groupId: number;
             file: string;
         };

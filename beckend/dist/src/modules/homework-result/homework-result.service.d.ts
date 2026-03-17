@@ -30,11 +30,11 @@ export declare class HomeworkResultService {
             status: import("@prisma/client").$Enums.HomeworkStatus;
             created_at: Date;
             updated_at: Date;
+            userId: number | null;
             title: string;
             teacherId: number | null;
-            score: number;
-            userId: number | null;
             studentId: number;
+            score: number;
             file: string | null;
             homeworkId: number;
         })[];
@@ -46,11 +46,11 @@ export declare class HomeworkResultService {
             status: import("@prisma/client").$Enums.HomeworkStatus;
             created_at: Date;
             updated_at: Date;
+            userId: number | null;
             title: string;
             teacherId: number | null;
-            score: number;
-            userId: number | null;
             studentId: number;
+            score: number;
             file: string | null;
             homeworkId: number;
         };

@@ -30,7 +30,7 @@ let StudentsController = class StudentsController {
         this.studentsService = studentsService;
     }
     createStudent(payload, file) {
-        return this.studentsService.createStudent(payload, file.filename);
+        return this.studentsService.createStudent(payload, file?.filename);
     }
     getAllStudent() {
         return this.studentsService.getAllStudents();

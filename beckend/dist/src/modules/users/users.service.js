@@ -72,9 +72,9 @@ let UsersService = class UsersService {
     }
     async deleteUser(id) {
         const user = await this.prisma.user.findUnique({ where: { id } });
-        if (!user) {
+        if (!user)
             throw new common_1.NotFoundException('User is Not found');
-        }
+        await this.prisma.studentGroup.deleteMany({ where: { userId: id } });
         await this.prisma.user.delete({ where: { id } });
     }
 };

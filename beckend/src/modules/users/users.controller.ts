@@ -68,7 +68,7 @@ export class UsersController {
     @Body() payload: CreateUserDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.userService.createUser(payload, file.filename);
+    return this.userService.createUser(payload, file?.filename);
   }
 
   @UseGuards(AuthGuard, RolesGuard)

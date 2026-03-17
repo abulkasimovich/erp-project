@@ -79,9 +79,11 @@ export class UsersService {
 
   async deleteUser(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } });
-    if (!user) {
-      throw new NotFoundException('User is Not found');
-    }
+    if (!user) throw new NotFoundException('User is Not found');
+
+    // Bog'liq ma'lumotlarni avval o'chirish (cascade)
+    await this.prisma.studentGroup.deleteMany({ where: { userId: id } });
+
     await this.prisma.user.delete({ where: { id } });
   }
 }

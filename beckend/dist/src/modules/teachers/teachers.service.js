@@ -22,6 +22,15 @@ let TeachersService = class TeachersService {
         this.mailerService = mailerService;
     }
     async createTeacher(payload, filename) {
+        const existing = await this.prisma.teacher.findUnique({
+            where: { email: payload.email },
+        });
+        if (existing) {
+            return {
+                success: false,
+                message: 'This email is already registered',
+            };
+        }
         await this.prisma.teacher.create({
             data: {
                 ...payload,
@@ -65,9 +74,13 @@ let TeachersService = class TeachersService {
     }
     async deleteTeacher(id) {
         const Teacher = await this.prisma.teacher.findUnique({ where: { id } });
-        if (!Teacher) {
+        if (!Teacher)
             throw new common_1.NotFoundException('Teacher is Not found');
-        }
+        await this.prisma.rating.deleteMany({ where: { teacherId: id } });
+        await this.prisma.group.updateMany({
+            where: { teacherId: id },
+            data: { teacherId: {} },
+        });
         await this.prisma.teacher.delete({ where: { id } });
     }
 };

@@ -49,23 +49,38 @@ export class CourseService {
   }
 
   async updateCourse(id: number, payload: UpdateCourseDto) {
-      const course = await this.prisma.course.findUnique({ where: { id } });
-      if (!course) {
-        throw new NotFoundException('course is Not found');
-      }
-      await this.prisma.course.update({ where: { id }, data: payload });
-  
-      return {
-        success: true,
-        message: 'course updated successfully',
-      };
+    const course = await this.prisma.course.findUnique({ where: { id } });
+    if (!course) {
+      throw new NotFoundException('course is Not found');
     }
-  
-    async deleteCourse(id: number) {
-      const course = await this.prisma.course.findUnique({ where: { id } });
-      if (!course) {
-        throw new NotFoundException('course is Not found');
-      }
-      await this.prisma.course.delete({ where: { id } });
+    await this.prisma.course.update({ where: { id }, data: payload });
+
+    return {
+      success: true,
+      message: 'course updated successfully',
+    };
+  }
+
+  async deleteCourse(id: number) {
+    const course = await this.prisma.course.findUnique({ where: { id } });
+    if (!course) {
+      throw new NotFoundException('course is Not found');
     }
+
+    // Bog'liq guruhlarni topish
+    const groups = await this.prisma.group.findMany({
+      where: { courseId: id },
+      select: { id: true },
+    });
+    const groupIds = groups.map(g => g.id);
+
+    // Cascade o'chirish
+    if (groupIds.length > 0) {
+      await this.prisma.studentGroup.deleteMany({ where: { groupId: { in: groupIds } } });
+      await this.prisma.lesson.deleteMany({ where: { groupId: { in: groupIds } } });
+      await this.prisma.group.deleteMany({ where: { courseId: id } });
+    }
+
+    await this.prisma.course.delete({ where: { id } });
+  }
 }

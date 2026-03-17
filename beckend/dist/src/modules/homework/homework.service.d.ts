@@ -27,10 +27,10 @@ export declare class HomeworksService {
             id: number;
             created_at: Date;
             updated_at: Date;
+            userId: number | null;
             title: string;
             teacherId: number | null;
             lessonId: number;
-            userId: number | null;
             groupId: number;
             file: string | null;
             durationTime: number;

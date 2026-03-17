@@ -66,9 +66,11 @@ let StudentsService = class StudentsService {
     }
     async deleteStudent(id) {
         const Student = await this.prisma.student.findUnique({ where: { id } });
-        if (!Student) {
+        if (!Student)
             throw new common_1.NotFoundException('Student is Not found');
-        }
+        await this.prisma.attendance.deleteMany({ where: { studentId: id } });
+        await this.prisma.homeworkResponse.deleteMany({ where: { studentId: id } });
+        await this.prisma.studentGroup.deleteMany({ where: { studentId: id } });
         await this.prisma.student.delete({ where: { id } });
     }
 };

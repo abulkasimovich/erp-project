@@ -30,7 +30,7 @@ let TeachersController = class TeachersController {
         this.teachersService = teachersService;
     }
     createTeacher(payload, file) {
-        return this.teachersService.createTeacher(payload, file.filename);
+        return this.teachersService.createTeacher(payload, file?.filename);
     }
     getAllTeacher() {
         return this.teachersService.getAllTeachers();

@@ -16,8 +16,8 @@ export declare class StudentGroupController {
             created_at: Date;
             updated_at: Date;
             userId: number;
-            groupId: number;
             studentId: number;
+            groupId: number;
         };
     }>;
     updateStudentGroup(id: string, payload: UpdateStudentGroupDto): Promise<{
